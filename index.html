@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <title>페이스 스왑</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="container">
+    <!-- 로딩 인디케이터 -->
+    <div id="loading-indicator" class="loading" style="display: none;">당신의 얼굴을 이식 중...</div>
+    
+    <h1>페이스 스왑하고 싶은 대상을 선택해주세요.</h1>
+    <div id="targets-gallery">
+      <!-- 모델 이미지 예시 -->
+      <img src="https://plinqer-faceswap.s3.ap-northeast-2.amazonaws.com/son.jpeg" class="target-img">
+      <img src="https://plinqer-faceswap.s3.ap-northeast-2.amazonaws.com/superman.jpeg" class="target-img">
+      <img src="https://plinqer-faceswap.s3.ap-northeast-2.amazonaws.com/fitness.jpg" class="target-img">
+      <br>
+      <img src="https://plinqer-faceswap.s3.ap-northeast-2.amazonaws.com/wedding.jpg" class="target-img">
+      <img src="https://plinqer-faceswap.s3.ap-northeast-2.amazonaws.com/soldier.jpg" class="target-img">
+      <img src="https://plinqer-faceswap.s3.ap-northeast-2.amazonaws.com/fitness2.jpeg" class="target-img">
+      <!-- 여기에 추가 모델 이미지를 삽입할 수 있습니다 -->
+    </div>
+    <video class="embed-responsive-item" autoplay="true" id="videoElement"></video>
+    <canvas id="canvas" style="display:none;"></canvas>
+    <br>
+    <button id="capture" class="btn">사진 촬영</button>
+    <canvas id="snapshot" hidden></canvas>
+    <br>
+    <button id="swap-face" class="btn" hidden>페이스 스왑</button>
+    <!-- 결과 이미지 -->
+    <img id="result" style="display: none;" alt="페이스 스왑 결과">
+  </div>
+  <script src="script.js"></script>
+</body>
+
+</html>
