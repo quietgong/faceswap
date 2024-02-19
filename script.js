@@ -1,14 +1,23 @@
 const video = document.querySelector("#videoElement");
+const webcamLoadingText = document.getElementById("webcam-loading"); // 웹캠 로딩 텍스트 요소
 
 if (navigator.mediaDevices.getUserMedia) {
   navigator.mediaDevices
     .getUserMedia({ video: true })
     .then(function (stream) {
       video.srcObject = stream;
+      video.onloadedmetadata = function (e) {
+        video.play();
+        // 웹캠 스트림이 로드되면 로딩 텍스트를 숨깁니다.
+        webcamLoadingText.style.display = "none";
+      };
     })
     .catch(function (error) {
       console.log(error.message);
+      webcamLoadingText.textContent = "웹캠을 불러오는 데 실패했습니다."; // 에러 메시지 업데이트
     });
+} else {
+  webcamLoadingText.textContent = "웹캠을 지원하지 않는 브라우저입니다.";
 }
 
 function flipVideo() {
@@ -117,10 +126,29 @@ function performFaceSwap(sourceImageUrl) {
     .then((data) => {
       showLoadingIndicator(false);
       if (data.statusCode === 200 && data.body.Success) {
-        const resultImage = data.body.ResultImageUrl;
-        // 결과 이미지를 표시
-        // 결과 이미지를 새 창으로 열기
-        window.open(resultImage, "_blank");
+        document.body.innerHTML = "";
+        const resultImage = new Image();
+        resultImage.src = data.body.ResultImageUrl;
+        resultImage.alt = "페이스 스왑 결과";
+        resultImage.style.display = "block";
+        resultImage.style.margin = "auto";
+        resultImage.style.cursor = "pointer"; // 커서를 포인터로 변경하여 클릭 가능함을 나타냅니다.
+        resultImage.addEventListener("click", () => {
+          // 페이지를 다시 로드하여 원래 상태로 돌아갑니다.
+          window.location.reload();
+        });
+        // 안내 문구를 생성합니다.
+        const restartText = document.createElement("p");
+        restartText.textContent = "이미지를 클릭하면 새로 시작할 수 있습니다.";
+        restartText.style.textAlign = "center";
+        restartText.style.marginTop = "20px";
+        restartText.style.fontSize = "18px";
+        restartText.style.color = "#FFFFFF";
+        restartText.style.fontFamily = "Arial, sans-serif";
+
+        // 결과 이미지와 안내 문구를 body에 추가합니다.
+        document.body.appendChild(resultImage);
+        document.body.appendChild(restartText);
       } else {
         alert("페이스 스왑에 실패했습니다: " + data.body.Message);
       }
@@ -136,7 +164,7 @@ function performFaceSwap(sourceImageUrl) {
 function showLoadingIndicator(show) {
   const loadingIndicator = document.getElementById("loading-indicator");
   if (show) {
-    loadingIndicator.style.display = "block";
+    loadingIndicator.style.display = "flex";
   } else {
     loadingIndicator.style.display = "none";
   }
